@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "267419229934",
+    "project_id": "timelapse-31632",
+    "storage_bucket": "timelapse-31632.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267419229934:android:da4a6f8b1d11bd9e685dff",
+        "android_client_info": {
+          "package_name": "com.timelapse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "267419229934-a09cm8bu2t0sshf63a5jtk9a65j5otn0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgv3460Z4hlidiaA0pJ_7e1TYScLXGaMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267419229934-a09cm8bu2t0sshf63a5jtk9a65j5otn0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "267419229934-tm8khgt7djne6031km6l3ul5b6ohjbdb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.timelapse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
