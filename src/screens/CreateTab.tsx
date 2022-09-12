@@ -7,11 +7,14 @@ import UnsplashSearch, { UnsplashPhoto } from 'react-native-unsplash';
 
 import firestore from '@react-native-firebase/firestore'
 
+import getAuth from "@react-native-firebase/auth"
+
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Alert } from "react-native";
 
 import unsplashKeys from '../credentials/unsplashKeys.json'
+import { useNavigation } from "@react-navigation/native";
 
 export function CreateTab(){
     const [isLoading, setIsLoading] = useState(false)
@@ -25,14 +28,21 @@ export function CreateTab(){
 
     const [selectPicture, setSelectPicture] = useState(false)
     const [selectedPicture, setSelectedPicture] = useState(null)
+    const [selectedOption, setSelectedOption] = useState('')
 
     const {colors} = useTheme()
+
+    const navigation = useNavigation()
+
+    const user = getAuth()
 
     function selectedCheckBox(type){
         type === "site" ? setCheckSite(true) : setCheckSite(false)
         type === "reports" ? setCheckReports(true) : setCheckReports(false)
         type === "score" ? setCheckScore(true) : setCheckScore(false)
-        type === "tasks" ? setCheckTasks(true) : setCheckTasks(false)   
+        type === "tasks" ? setCheckTasks(true) : setCheckTasks(false) 
+        
+        setSelectedOption(type)
     }
 
     function onOnlinePhotoSelect(photo: UnsplashPhoto) {
@@ -41,7 +51,7 @@ export function CreateTab(){
     }
 
     function handleNewTab(){
-        if(!tabName){
+        if(!tabName || !selectedPicture || !selectedOption){
           return Alert.alert("Registrar", "Preencha todos os campos.")
         }
     
@@ -50,11 +60,13 @@ export function CreateTab(){
           .collection('tabs')
           .add({
             tabName, 
-            imageUrl: selectedPicture
+            imageUrl: selectedPicture,
+            userId: user.currentUser.uid,
+            type: selectedOption
           })
           .then(() => {
             Alert.alert("Solicitação", "Solicitação registrada com sucesso.")
-            setIsLoading(false)
+            navigation.goBack()
           })
           .catch(error => {
             console.log(error)
@@ -64,18 +76,19 @@ export function CreateTab(){
       }
 
     return ( 
-        <VStack flex={1} pb={6} bg="gray.600">
+        <VStack flex={1} pb={6} bg="gray.700">
             <HStack
                 w="full"
                 justifyContent="space-between"
                 alignItems="center"
-                bg="gray.700"
+                bg="gray.600"
                 pt={6}
                 pb={5}
                 px={6}
             >   
                 <IconButton
                     icon={<ArrowLeft size={26} color={colors.gray[300]} />}
+                    onPress={() => navigation.goBack()}
                 />
             </HStack>
 
@@ -85,51 +98,52 @@ export function CreateTab(){
                     onPhotoSelect={onOnlinePhotoSelect}
                 />
              :
-            <VStack flex={1} p={6} bg="gray.600" >
+            <VStack flex={1} p={6} >
                 <Input 
                     placeholder='Nome da aba'
                     onChangeText={setTabName}
+                    value={tabName}
                     mt={4} 
                     mb={4}
                 />
 
-            <Pressable onPress={() => setSelectPicture(true)} >
-                <HStack
-                    bg="gray.700"
-                    h={14}
-                    mb={5}
-                    size="md"
-                    borderRadius={5}
-                    alignItems="center"
-                    justifyContent="center"
-                >
+                <Pressable onPress={() => setSelectPicture(true)} >
+                    <HStack
+                        bg="gray.700"
+                        h={14}
+                        mb={5}
+                        size="md"
+                        borderRadius={5}
+                        alignItems="center"
+                        justifyContent="center"
+                    >
 
-                    {selectedPicture === null ? 
-                        <></>
-                     :
-                        <Image 
-                            source={{
-                                uri: selectedPicture
-                            }} 
+                        {selectedPicture === null ? 
+                            <></>
+                        :
+                            <Image 
+                                source={{
+                                    uri: selectedPicture
+                                }} 
+                                w="full"
+                                h={55}
+                                alt="tabImage"
+                                borderRadius={5}
+                            />
+                        }
+                        <HStack 
+                            position="absolute" 
+                            bg={'rgba(52, 52, 52, 0.8)'} 
+                            justifyContent="center"
+                            alignItems="center"
                             w="full"
                             h={55}
-                            alt="tabImage"
-                            borderRadius={5}
-                        />
-                    }
-                    <HStack 
-                        position="absolute" 
-                        bg={'rgba(52, 52, 52, 0.8)'} 
-                        justifyContent="center"
-                        alignItems="center"
-                        w="full"
-                        h={55}
-                    >
-                        <Upload size={26} color={colors.gray[300]} />
-                        <Text bold ml={2} color={colors.gray[300]} > Escolher Capa </Text>
-                    </HStack>
+                        >
+                            <Upload size={26} color={colors.gray[300]} />
+                            <Text bold ml={2} color={colors.gray[300]} > Escolher Capa </Text>
+                        </HStack>
 
-                </HStack>
+                    </HStack>
                 </Pressable>
             
                 <Checkbox  

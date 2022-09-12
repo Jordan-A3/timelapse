@@ -3,6 +3,8 @@ import { Heading, VStack, Icon, useTheme } from "native-base";
 
 import { Envelope, Key } from 'phosphor-react-native';
 
+import auth from '@react-native-firebase/auth'
+
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Alert } from "react-native";
@@ -20,26 +22,26 @@ export function SignIn(){
         }
         setIsLoading(false)
 
-        // auth()
-        //     .signInWithEmailAndPassword(email, password)
-        //     .catch((error) => {
-        //         console.log(error)
-        //         setIsLoading(false)
+        auth()
+            .signInWithEmailAndPassword(email, password)
+            .catch((error) => {
+                console.log(error)
+                setIsLoading(false)
 
-        //         if(error.code === 'auth/invalid-email'){
-        //             return  Alert.alert("Entrar", "E-mail inválido")
-        //         }
+                if(error.code === 'auth/invalid-email'){
+                    return  Alert.alert("Entrar", "E-mail inválido")
+                }
 
-        //         if(error.code === 'auth/wrong-password'){
-        //             return  Alert.alert("Entrar", "E-mail ou senha inválida")
-        //         }
+                if(error.code === 'auth/wrong-password'){
+                    return  Alert.alert("Entrar", "E-mail ou senha inválida")
+                }
 
-        //         if(error.code === 'auth/user-not-found'){
-        //                 return Alert.alert("Entrar", "E-mail ou senha inválida")
-        //         }
+                if(error.code === 'auth/user-not-found'){
+                        return Alert.alert("Entrar", "E-mail ou senha inválida")
+                }
 
-        //         Alert.alert("Entrar", "Não foi possível acessar")
-        //     })
+                Alert.alert("Entrar", "Não foi possível acessar")
+            })
     }
 
     return ( 

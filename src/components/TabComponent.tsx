@@ -5,8 +5,9 @@ import { Plus } from 'phosphor-react-native';
 export type TabProps = {
     id: string;
     tabName: string;
-    imageUrl: string;
-    first? : string;
+    imageUrl?: string;
+    userId: string;
+    type: string;
 }
 
 type Props = IPressableProps & {
@@ -31,15 +32,15 @@ export function TabComponent({data, ...rest}: Props) {
         mb={8}
       >
         {
-          data.first ? 
-          <Plus size={120} color={colors.gray[300]} />:
+          data.imageUrl ? 
           <Image 
                 source={{
                     uri: data.imageUrl as string
                 }} 
                 size={100}
                 alt="tabImage"
-            />
+            /> :
+            <Plus size={120} color={colors.gray[300]} />
         }
             <VStack 
                 flex={1} 

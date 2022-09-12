@@ -1,5 +1,5 @@
-import { Box, HStack, Pressable, Text, useTheme, VStack, IPressableProps, Image, Heading } from 'native-base';
-import { ClockAfternoon } from 'phosphor-react-native'
+import { Box, HStack, Pressable, Text, useTheme, VStack, IPressableProps, Image, Heading, IconButton } from 'native-base';
+import { ClockAfternoon, Pencil } from 'phosphor-react-native'
 
 
 export type TaskProps = {
@@ -7,6 +7,7 @@ export type TaskProps = {
     title: string;
     when: string;
     weekday: string;
+    userId: string;
     type: 'tasks' | 'events';
 }
 
@@ -28,8 +29,6 @@ export function Task({data, ...rest}: Props) {
         overflow="hidden"
         mb={2}
       >
-        <Box h="full" w={2} bg="colors.secondary" />
-
         <VStack flex={1} my={5} ml={5} >
           <Text color="white" fontSize="md">
               {data.title}
@@ -42,6 +41,10 @@ export function Task({data, ...rest}: Props) {
               </Text> 
           </HStack>
         </VStack>
+        <IconButton
+            mr={2}
+            icon={<Pencil size={26} color={colors.gray[300]} />}
+        />
       </HStack>
     </Pressable>
   );
